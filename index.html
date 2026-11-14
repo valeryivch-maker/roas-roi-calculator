@@ -1,0 +1,222 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ROAS & Ad ROI Calculator — Break-Even & Profit Estimator</title>
+  <meta name="description" content="Free ROAS and Marketing ROI Calculator. Calculate Return on Ad Spend, Net Profit, CPA, and Break-Even ROAS for Google Ads, Facebook, and TikTok campaigns.">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --input-bg: #f1f5f9;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --green: #16a34a;
+      --red: #dc2626;
+      --amber: #d97706;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { min-height: 100vh; background: var(--bg); color: var(--text); line-height: 1.6; padding: 20px 14px 50px; }
+    .container { max-width: 780px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 24px; }
+    header h1 { font-size: 1.85rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.02em; }
+    header h1 span { color: var(--accent); }
+    header p { color: var(--muted); font-size: 0.98rem; }
+    .ad-slot { background: #f1f5f9; border: 1px dashed #cbd5e1; border-radius: 10px; padding: 14px; text-align: center; color: var(--muted); font-size: 0.8rem; margin-bottom: 22px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06); margin-bottom: 24px; }
+    .section-label { display: block; font-size: 0.82rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 10px; }
+    .presets { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin-bottom: 20px; }
+    .preset-btn { background: var(--input-bg); border: 1px solid var(--border); color: var(--text); padding: 10px 12px; border-radius: 10px; cursor: pointer; text-align: left; transition: 0.15s; }
+    .preset-btn:hover { border-color: var(--accent); }
+    .preset-btn.active { border-color: var(--accent); background: rgba(37, 99, 235, 0.08); }
+    .preset-name { display: block; font-weight: 700; font-size: 0.86rem; }
+    .preset-rate { display: block; font-size: 0.74rem; color: var(--muted); margin-top: 2px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+    .field label { display: block; font-size: 0.86rem; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+    .field input { width: 100%; background: var(--input-bg); border: 1px solid var(--border); color: var(--text); padding: 11px 13px; border-radius: 10px; font-size: 0.98rem; font-weight: 600; outline: none; }
+    .field input:focus { border-color: var(--accent); background: #fff; }
+    .results { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .res-box { background: var(--input-bg); border: 1px solid var(--border); border-radius: 12px; padding: 14px 10px; text-align: center; }
+    .res-title { font-size: 0.76rem; font-weight: 600; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; }
+    .res-val { font-size: 1.35rem; font-weight: 800; color: var(--accent); }
+    .res-val.pos { color: var(--green); }
+    .res-val.neg { color: var(--red); }
+    .res-sub { font-size: 0.73rem; color: var(--muted); margin-top: 3px; }
+    .status-banner { margin-top: 14px; padding: 12px 16px; border-radius: 10px; font-size: 0.88rem; font-weight: 600; text-align: center; background: rgba(22, 163, 74, 0.1); color: var(--green); border: 1px solid rgba(22, 163, 74, 0.25); }
+    .status-banner.loss { background: rgba(220, 38, 38, 0.1); color: var(--red); border-color: rgba(220, 38, 38, 0.25); }
+    .seo-block { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 22px; }
+    .seo-block h2 { font-size: 1.2rem; margin-bottom: 10px; color: var(--text); }
+    .seo-block p { color: var(--muted); font-size: 0.92rem; margin-bottom: 12px; }
+    .hub-links { padding: 18px; border-radius: 14px; border: 1px solid var(--border); background: var(--card); text-align: center; font-size: 0.9rem; }
+    .hub-links strong { display: block; margin-bottom: 8px; color: var(--text); }
+    .hub-links a { color: var(--accent); text-decoration: none; font-weight: 600; margin: 0 8px; display: inline-block; padding: 2px 0; }
+    .hub-links a:hover { text-decoration: underline; }
+    footer { text-align: center; color: var(--muted); font-size: 0.8rem; margin-top: 24px; }
+    @media (max-width: 680px) { .grid-2 { grid-template-columns: 1fr; } .results { grid-template-columns: 1fr 1fr; } header h1 { font-size: 1.5rem; } }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>ROAS & <span>Ad ROI</span> Calculator</h1>
+    <p>Calculate Return on Ad Spend, Net Campaign Profit, and Break-Even ROAS in seconds.</p>
+  </header>
+
+  <div class="ad-slot">Advertisement Space (Google AdSense Ready)</div>
+
+  <main class="card">
+    <span class="section-label">1. Quick Campaign Presets</span>
+    <div class="presets">
+      <button class="preset-btn active" onclick="applyPreset(1000, 4200, 60, 85, this)">
+        <span class="preset-name">E-Commerce Store</span>
+        <span class="preset-rate">$1k Spend · 60% Margin</span>
+      </button>
+      <button class="preset-btn" onclick="applyPreset(2500, 9500, 85, 40, this)">
+        <span class="preset-name">SaaS / Digital Product</span>
+        <span class="preset-rate">$2.5k Spend · 85% Margin</span>
+      </button>
+      <button class="preset-btn" onclick="applyPreset(500, 1400, 100, 35, this)">
+        <span class="preset-name">Affiliate / Lead Gen</span>
+        <span class="preset-rate">$500 Spend · 100% Margin</span>
+      </button>
+      <button class="preset-btn" onclick="applyPreset(5000, 18000, 45, 320, this)">
+        <span class="preset-name">Local / High-Ticket</span>
+        <span class="preset-rate">$5k Spend · 45% Margin</span>
+      </button>
+    </div>
+
+    <span class="section-label">2. Campaign Numbers</span>
+    <div class="grid-2">
+      <div class="field">
+        <label for="ad-spend">Total Ad Spend ($ USD)</label>
+        <input type="number" id="ad-spend" value="1000" min="0" step="50" oninput="clearPreset(); calculate()">
+      </div>
+      <div class="field">
+        <label for="ad-rev">Total Revenue Generated ($ USD)</label>
+        <input type="number" id="ad-rev" value="4200" min="0" step="100" oninput="clearPreset(); calculate()">
+      </div>
+      <div class="field">
+        <label for="margin">Product Profit Margin (%)</label>
+        <input type="number" id="margin" value="60" min="1" max="100" step="1" oninput="clearPreset(); calculate()">
+      </div>
+      <div class="field">
+        <label for="conversions">Total Conversions / Sales (Optional)</label>
+        <input type="number" id="conversions" value="85" min="0" step="1" oninput="clearPreset(); calculate()">
+      </div>
+    </div>
+
+    <div class="results">
+      <div class="res-box">
+        <div class="res-title">ROAS</div>
+        <div class="res-val" id="res-roas">4.20x</div>
+        <div class="res-sub" id="res-roas-pct">420% return</div>
+      </div>
+      <div class="res-box">
+        <div class="res-title">Net Profit</div>
+        <div class="res-val pos" id="res-profit">+$1,520.00</div>
+        <div class="res-sub">After COGS & ad spend</div>
+      </div>
+      <div class="res-box">
+        <div class="res-title">True ROI</div>
+        <div class="res-val pos" id="res-roi">+152.0%</div>
+        <div class="res-sub">Net profit / ad spend</div>
+      </div>
+      <div class="res-box">
+        <div class="res-title">Break-Even ROAS</div>
+        <div class="res-val" id="res-be" style="color:var(--amber);">1.67x</div>
+        <div class="res-sub" id="res-cpa">CPA: $11.76</div>
+      </div>
+    </div>
+
+    <div class="status-banner" id="status-banner">
+      Profitable Campaign: Your ROAS (4.20x) is above your Break-Even threshold (1.67x).
+    </div>
+  </main>
+
+  <section class="seo-block">
+    <h2>ROAS vs. ROI: What Is the Difference?</h2>
+    <p><strong>ROAS (Return on Ad Spend)</strong> measures gross revenue generated for every dollar spent on advertising (Revenue ÷ Ad Spend). For example, spending $1,000 to generate $4,200 in sales equals a 4.20x ROAS.</p>
+    <p><strong>True Marketing ROI</strong> accounts for your product profit margin and cost of goods sold (COGS). Knowing your <strong>Break-Even ROAS</strong> (1 ÷ Profit Margin) tells you the exact minimum return required before an ad campaign starts losing money.</p>
+  </section>
+
+  <nav class="hub-links">
+    <strong>More Free Financial & Tech Calculators:</strong>
+    <a href="https://valeryivch-maker.github.io/freelance-fee-calculator/" target="_blank">Freelance Fee Calculator</a> |
+    <a href="https://valeryivch-maker.github.io/crypto-staking-calculator/" target="_blank">Crypto Staking & APY Calculator</a> |
+    <a href="https://valeryivch-maker.github.io/ai-token-cost-calculator/" target="_blank">AI Token & LLM API Cost Calculator</a>
+  </nav>
+
+  <footer>
+    <p>Free ROAS & Ad ROI Calculator · Instant browser-based calculation, no data stored.</p>
+  </footer>
+</div>
+<script>
+  function applyPreset(spend, rev, margin, conv, btn) {
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('ad-spend').value = spend;
+    document.getElementById('ad-rev').value = rev;
+    document.getElementById('margin').value = margin;
+    document.getElementById('conversions').value = conv;
+    calculate();
+  }
+
+  function clearPreset() {
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  }
+
+  function formatCurrency(val) {
+    const abs = Math.abs(val).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return (val < 0 ? '-$' : '+$') + abs;
+  }
+
+  function calculate() {
+    const spend = Math.max(0, parseFloat(document.getElementById('ad-spend').value) || 0);
+    const rev = Math.max(0, parseFloat(document.getElementById('ad-rev').value) || 0);
+    const marginPct = Math.min(100, Math.max(1, parseFloat(document.getElementById('margin').value) || 100));
+    const conv = Math.max(0, parseFloat(document.getElementById('conversions').value) || 0);
+
+    const marginRatio = marginPct / 100;
+    const roas = spend > 0 ? rev / spend : 0;
+    const roasPct = roas * 100;
+    const grossProfit = rev * marginRatio;
+    const netProfit = grossProfit - spend;
+    const roi = spend > 0 ? (netProfit / spend) * 100 : 0;
+    const breakEvenRoas = 1 / marginRatio;
+    const cpa = conv > 0 ? spend / conv : 0;
+
+    document.getElementById('res-roas').innerText = roas.toFixed(2) + 'x';
+    document.getElementById('res-roas-pct').innerText = Math.round(roasPct).toLocaleString('en-US') + '% return';
+
+    const profitEl = document.getElementById('res-profit');
+    profitEl.innerText = netProfit === 0 ? '$0.00' : formatCurrency(netProfit);
+    profitEl.className = 'res-val ' + (netProfit >= 0 ? 'pos' : 'neg');
+
+    const roiEl = document.getElementById('res-roi');
+    roiEl.innerText = (roi >= 0 ? '+' : '') + roi.toFixed(1) + '%';
+    roiEl.className = 'res-val ' + (roi >= 0 ? 'pos' : 'neg');
+
+    document.getElementById('res-be').innerText = breakEvenRoas.toFixed(2) + 'x';
+    document.getElementById('res-cpa').innerText = conv > 0 ? 'CPA: $' + cpa.toFixed(2) : 'Enter sales for CPA';
+
+    const banner = document.getElementById('status-banner');
+    if (spend === 0) {
+      banner.className = 'status-banner';
+      banner.innerText = 'Enter your Ad Spend above to evaluate campaign profitability.';
+    } else if (roas >= breakEvenRoas) {
+      banner.className = 'status-banner';
+      banner.innerText = `Profitable Campaign: Your ROAS (${roas.toFixed(2)}x) is above your Break-Even threshold (${breakEvenRoas.toFixed(2)}x).`;
+    } else {
+      banner.className = 'status-banner loss';
+      banner.innerText = `Unprofitable Campaign: Your ROAS (${roas.toFixed(2)}x) is below your Break-Even threshold (${breakEvenRoas.toFixed(2)}x).`;
+    }
+  }
+
+  calculate();
+</script>
+</body>
+</html>
