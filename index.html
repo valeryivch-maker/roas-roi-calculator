@@ -145,9 +145,13 @@
         <strong style="display:block; font-size:0.74rem; text-transform:uppercase; letter-spacing:0.04em; color:#15803d; margin-bottom:2px;">Next Logical Step &rarr;</strong>
         Reinvest <strong id="next-step-profit">$1,520.00</strong>/mo net profit into a compound reserve fund:
       </div>
-      <a href="#" id="next-step-link" target="_blank" rel="noopener" style="background:#16a34a; color:#ffffff; text-decoration:none; font-weight:700; font-size:0.84rem; padding:9px 14px; border-radius:8px; white-space:nowrap;">Forecast Compounding &rarr;</a>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <button type="button" id="share-est-btn" onclick="copyShareLink()" style="background:#ffffff; color:#15803d; border:1px solid #86efac; font-weight:700; font-size:0.82rem; padding:8px 12px; border-radius:8px; cursor:pointer; white-space:nowrap;">&#128279; Copy Estimate Link</button>
+        <a href="#" id="next-step-link" target="_blank" rel="noopener" style="background:#16a34a; color:#ffffff; text-decoration:none; font-weight:700; font-size:0.84rem; padding:9px 14px; border-radius:8px; white-space:nowrap;">Forecast Compounding &rarr;</a>
+      </div>
     </div>
   </main>
+
 
 
   <section class="seo-block">
@@ -275,7 +279,20 @@
     predisLinkEl.href = ['https:/', '/predis.ai', '?ref=valerii-9dde19'].join('');
   }
 
+  function copyShareLink() {
+    const spend = document.getElementById('ad-spend').value || 0;
+    const rev = document.getElementById('ad-rev').value || 0;
+    const margin = document.getElementById('margin').value || 60;
+    const conv = document.getElementById('conversions').value || 0;
+    const url = window.location.origin + window.location.pathname + '?spend=' + encodeURIComponent(spend) + '&rev=' + encodeURIComponent(rev) + '&margin=' + encodeURIComponent(margin) + '&conv=' + encodeURIComponent(conv);
+    navigator.clipboard.writeText(url).then(() => {
+      const btn = document.getElementById('share-est-btn');
+      if (btn) { btn.innerHTML = '&#10003; Link Copied!'; setTimeout(() => { btn.innerHTML = '&#128279; Copy Estimate Link'; }, 1800); }
+    });
+  }
+
   (function initFromUrl() {
+
 
     const params = new URLSearchParams(window.location.search);
     const pSpend = params.get('spend');
