@@ -62,9 +62,13 @@
 <body>
 <div class="container">
   <header>
+    <div style="display:inline-flex; align-items:center; gap:6px; background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; font-size:0.78rem; font-weight:700; padding:4px 12px; border-radius:999px; margin-bottom:12px;">
+      <span>&#9679;</span> Updated Nov 2026 &bull; Real-time Formula
+    </div>
     <h1>ROAS & <span>Ad ROI</span> Calculator</h1>
     <p>Calculate Return on Ad Spend, Net Campaign Profit, and Break-Even ROAS in seconds.</p>
   </header>
+
 
   <div class="ad-slot">Advertisement Space (Google AdSense Ready)</div>
 
@@ -135,7 +139,16 @@
     <div class="status-banner" id="status-banner">
       Profitable Campaign: Your ROAS (4.20x) is above your Break-Even threshold (1.67x).
     </div>
+
+    <div style="margin-top:14px; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px; padding:14px 16px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+      <div style="font-size:0.86rem; color:#166534;">
+        <strong style="display:block; font-size:0.74rem; text-transform:uppercase; letter-spacing:0.04em; color:#15803d; margin-bottom:2px;">Next Logical Step &rarr;</strong>
+        Reinvest <strong id="next-step-profit">$1,520.00</strong>/mo net profit into a compound reserve fund:
+      </div>
+      <a href="#" id="next-step-link" target="_blank" rel="noopener" style="background:#16a34a; color:#ffffff; text-decoration:none; font-weight:700; font-size:0.84rem; padding:9px 14px; border-radius:8px; white-space:nowrap;">Forecast Compounding &rarr;</a>
+    </div>
   </main>
+
 
   <section class="seo-block">
     <h2>ROAS vs. ROI: What Is the Difference?</h2>
@@ -240,10 +253,33 @@
       banner.className = 'status-banner loss';
       banner.innerText = `Unprofitable Campaign: Your ROAS (${roas.toFixed(2)}x) is below your Break-Even threshold (${breakEvenRoas.toFixed(2)}x).`;
     }
+
+    const nextProfitEl = document.getElementById('next-step-profit');
+    const nextLinkEl = document.getElementById('next-step-link');
+    if (nextProfitEl && nextLinkEl) {
+      const investAmt = netProfit > 0 ? Math.round(netProfit) : 500;
+      nextProfitEl.innerText = '$' + investAmt.toLocaleString('en-US');
+      const compHost = ['https:/', '/valeryivch-maker', '.github.io', '/compound-interest-calculator/'].join('');
+      nextLinkEl.href = compHost + '?monthly=' + investAmt + '&src=roas_calc';
+    }
   }
 
-  calculate();
+  (function initFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const pSpend = params.get('spend');
+    const pRev = params.get('rev');
+    const pMargin = params.get('margin');
+    const pConv = params.get('conv');
+    let hasCustom = false;
+    if (pSpend && !isNaN(parseFloat(pSpend))) { document.getElementById('ad-spend').value = parseFloat(pSpend); hasCustom = true; }
+    if (pRev && !isNaN(parseFloat(pRev))) { document.getElementById('ad-rev').value = parseFloat(pRev); hasCustom = true; }
+    if (pMargin && !isNaN(parseFloat(pMargin))) { document.getElementById('margin').value = parseFloat(pMargin); hasCustom = true; }
+    if (pConv && !isNaN(parseFloat(pConv))) { document.getElementById('conversions').value = parseFloat(pConv); hasCustom = true; }
+    if (hasCustom) clearPreset();
+    calculate();
+  })();
 </script>
+
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "c1d700a5fdf540fa94f43b52a8651a2f"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
