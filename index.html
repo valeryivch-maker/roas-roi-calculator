@@ -156,30 +156,30 @@
     <p><strong>True Marketing ROI</strong> accounts for your product profit margin and cost of goods sold (COGS). Knowing your <strong>Break-Even ROAS</strong> (1 ÷ Profit Margin) tells you the exact minimum return required before an ad campaign starts losing money.</p>
   </section>
 
-  <!-- NATIVE CPA BLOCK: ROAS & ROI -->
-<div style="margin:24px 0; padding:20px; border-radius:12px; background:#f8fafc; border:1px solid #cbd5e1; color:#0f172a; font-family:inherit; box-shadow:0 2px 4px rgba(0,0,0,0.03);">
-  <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; color:#2563eb; margin-bottom:8px;">
-    Growth &amp; Conversion Tools
-  </div>
-  <div style="font-size:17px; font-weight:700; margin-bottom:6px; color:#0f172a;">
-    Want to improve your ROAS and lower customer acquisition costs?
-  </div>
-  <p style="font-size:14px; line-height:1.5; color:#475569; margin:0 0 14px 0;">
-    Audit competitor ad keywords to stop wasted spend or launch a high-converting store checkout built for scaling paid traffic.
-  </p>
-  <div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
-    <a href="https://semrush.com" target="_blank" rel="nofollow sponsored noopener" style="display:inline-block; background:#ea580c; color:#ffffff; text-decoration:none; font-weight:600; font-size:13px; padding:10px 16px; border-radius:8px;">
-      Try Semrush Ad &amp; Keyword Research →
-    </a>
-    <a href="https://shopify.com" target="_blank" rel="nofollow sponsored noopener" style="display:inline-block; background:#16a34a; color:#ffffff; text-decoration:none; font-weight:600; font-size:13px; padding:10px 16px; border-radius:8px;">
-      Start Shopify Free Trial →
-    </a>
+    <!-- NATIVE CPA BLOCK: PREDIS.AI -->
+  <div style="margin:24px 0; padding:20px; border-radius:14px; background:#eff6ff; border:1px solid #bfdbfe; color:#0f172a; box-shadow:0 4px 12px rgba(37,99,235,0.06);">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+      <span style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:#1d4ed8;">AI Ad Creative Optimization</span>
+      <span id="predis-save-badge" style="background:#dbeafe; color:#1e40af; font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px;">Cut creative costs by ~60%</span>
+    </div>
+    <div style="font-size:17px; font-weight:800; margin-bottom:6px; color:#0f172a;">
+      Improve Your ROAS with High-Converting AI Video &amp; Carousel Ads
+    </div>
+    <p style="font-size:14px; line-height:1.5; color:#334155; margin:0 0 14px 0;">
+      Creative fatigue is the #1 killer of ad ROI. Generate scroll-stopping Facebook, Instagram, and TikTok ad creatives with AI in seconds instead of paying $300+ per agency video.
+    </p>
+    <div style="display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin-bottom:10px;">
+      <a href="#" id="predis-aff-link" target="_blank" rel="nofollow sponsored noopener" style="display:inline-block; background:#2563eb; color:#ffffff; text-decoration:none; font-weight:700; font-size:13.5px; padding:11px 18px; border-radius:9px;">
+        Generate Free AI Ad Creatives &rarr;
+      </a>
+      <span style="font-size:12px; color:#475569; font-weight:600;">Free plan available &bull; No credit card required</span>
+    </div>
+    <div style="font-size:11px; color:#64748b;">
+      Affiliate disclosure: We may earn a commission at no extra cost to you.
+    </div>
   </div>
 
-  <div style="font-size:11px; color:#94a3b8;">
-    Affiliate disclosure: We may earn a commission at no extra cost to you.
-  </div>
-</div>
+
 
   <nav class="hub-links">
     <strong>More Free Financial & Tech Calculators:</strong>
@@ -262,9 +262,21 @@
       const compHost = ['https:/', '/valeryivch-maker', '.github.io', '/compound-interest-calculator/'].join('');
       nextLinkEl.href = compHost + '?monthly=' + investAmt + '&src=roas_calc';
     }
+
+    const predisBadge = document.getElementById('predis-save-badge');
+    if (predisBadge) {
+      const estCreativeSave = Math.max(150, Math.round(spend * 0.25));
+      predisBadge.innerText = spend > 0 ? 'Save ~$' + estCreativeSave.toLocaleString('en-US') + ' on ad design' : 'Cut creative costs by ~60%';
+    }
+  }
+
+  const predisLinkEl = document.getElementById('predis-aff-link');
+  if (predisLinkEl) {
+    predisLinkEl.href = ['https:/', '/predis.ai', '?ref=valerii-9dde19'].join('');
   }
 
   (function initFromUrl() {
+
     const params = new URLSearchParams(window.location.search);
     const pSpend = params.get('spend');
     const pRev = params.get('rev');
