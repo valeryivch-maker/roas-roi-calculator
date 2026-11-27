@@ -56,8 +56,14 @@
     .hub-links a { color: var(--accent); text-decoration: none; font-weight: 600; margin: 0 8px; display: inline-block; padding: 2px 0; }
     .hub-links a:hover { text-decoration: underline; }
     footer { text-align: center; color: var(--muted); font-size: 0.8rem; margin-top: 24px; }
+    .legal-links { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-top: 8px; }
+    .legal-links a { color: var(--accent); text-decoration: none; font-size: 0.78rem; font-weight: 600; cursor: pointer; }
+    .legal-links a:hover { text-decoration: underline; }
+    .legal-details { max-width: 680px; margin: 12px auto 0; text-align: left; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; font-size: 0.78rem; line-height: 1.5; color: #475569; display: none; }
+    .legal-details.open { display: block; }
     @media (max-width: 680px) { .grid-2 { grid-template-columns: 1fr; } .results { grid-template-columns: 1fr 1fr; } header h1 { font-size: 1.5rem; } }
   </style>
+
 </head>
 <body>
 <div class="container">
@@ -194,8 +200,20 @@
   </nav>
 
   <footer>
-    <p>Free ROAS & Ad ROI Calculator · Instant browser-based calculation, no data stored.</p>
+    <p>&copy; 2026 Smart Finance &amp; Tech Calculators &bull; Free ROAS &amp; Ad ROI Utility</p>
+    <p style="margin-top:6px; font-size:0.76rem;"><strong>FTC Affiliate Disclosure:</strong> Some links on this page (including Predis.ai) are partner referrals. We may earn a commission at no extra cost to you.</p>
+    <div class="legal-links">
+      <a onclick="toggleLegal('privacy')">Privacy Policy</a>
+      <a onclick="toggleLegal('disclaimer')">Marketing &amp; Financial Disclaimer</a>
+    </div>
+    <div id="legal-privacy" class="legal-details">
+      <strong>Privacy Policy (Updated Nov 2026):</strong> All ROAS, CPA, and campaign profit calculations run 100% locally in your browser. We do not collect, store, or transmit your ad spend, revenue, or margin data. We use privacy-first, cookieless Cloudflare Web Analytics solely to measure aggregate traffic without cross-site tracking.
+    </div>
+    <div id="legal-disclaimer" class="legal-details">
+      <strong>Marketing &amp; Financial Disclaimer:</strong> Return on Ad Spend (ROAS), Break-Even ROAS, and net campaign profit projections are estimates for informational and budgeting purposes only and do not constitute financial, tax, or business advice. Actual advertising performance varies by platform, audience, and fulfillment costs.
+    </div>
   </footer>
+
 </div>
 <script>
   function applyPreset(spend, rev, margin, conv, btn) {
@@ -307,7 +325,17 @@
     if (hasCustom) clearPreset();
     calculate();
   })();
+
+  function toggleLegal(type) {
+    ['privacy', 'disclaimer'].forEach(k => {
+      const el = document.getElementById('legal-' + k);
+      if (!el) return;
+      if (k === type) el.classList.toggle('open');
+      else el.classList.remove('open');
+    });
+  }
 </script>
+
 
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "c1d700a5fdf540fa94f43b52a8651a2f"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
